@@ -13,11 +13,12 @@ import com.example.architecturepatterns.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,MovieView {
     @BindView(R.id.textView)
     TextView movieNameTV;
     @BindView(R.id.bottom)
     Button getMovieButton;
+    MoviePresenter moviePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,20 +26,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         getMovieButton.setOnClickListener(this);
-    }
-
-    public MovieModel getMovieModle() {
-        return new MovieModel("Fast Five", "25-12-1996", "best Movie Ever", 1);
-    }
-
-    public void getMovie() {
-        movieNameTV.setText(getMovieModle().getName());
+        moviePresenter = new MoviePresenter(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.bottom) {
-            getMovie();
+           moviePresenter.getMovieName();
         }
+    }
+
+    @Override
+    public void onGetMovieName(String movieName) {
+        movieNameTV.setText(movieName);
     }
 }
